@@ -5,6 +5,11 @@ pipeline {
       maven 'maven-3.6.3'
     }
 
+    environment {
+      // We use localhost:5000 to tell docker to use a local registry
+      imageName = "localhost:5000/frontend"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -16,6 +21,15 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh 'mvn test' 
+            }
+        }
+        stage('Docker-Build') {
+            steps {
+                script {
+                    def newImages = docker.build imageName + ":$BUILD_NUMBER"
+                    newImages.push()
+                    newImages.push('latest')
+                }
             }
         }
         stage('Package') {
