@@ -7,7 +7,7 @@ pipeline {
 
     environment {
       // We use localhost:5000 to tell docker to use a local registry
-      imageName = "localhost:5000/frontend"
+      imageName = "localhost:5000/carts"
     }
 
     stages {
